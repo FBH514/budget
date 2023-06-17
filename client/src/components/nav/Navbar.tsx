@@ -1,7 +1,11 @@
 import useMobile from "../../hooks/useMobile.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Icons} from "../../utils/Icons.tsx";
+import {motion} from "framer-motion";
+import NavItemComponent from "./NavItemComponent.tsx";
 
 enum Desktop {
-    PARENT = "bg-cyan-700 p-4 flex items-center gap-4"
+    PARENT = "bg-gradient-to-br from-indigo-700 to-blue-700 p-4 flex items-center justify-between gap-4 shadow-md rounded-b-md"
 }
 
 enum Mobile {
@@ -15,12 +19,30 @@ export default function Navbar({balance}: {
     const mobile = useMobile();
 
     return (
-        <nav
-            className={mobile ? Mobile.PARENT : Desktop.PARENT}
-        >
-            <h2 className={"text-2xl text-cyan-700 font-bold p-4 bg-zinc-900 rounded-md shadow-md w-fit"}>
-                {balance && balance >= 0 ? (`$${balance}`) : -`$${balance}`}
-            </h2>
-        </nav>
+        <motion.nav
+            initial={{y: -100}}
+            animate={{y: 0}}
+            transition={{duration: 1}}
+            className={mobile ? Mobile.PARENT : Desktop.PARENT}>
+            <div className={"flex items-center gap-4"}>
+                <NavItemComponent
+                    name={balance >= 0 ? "Surplus" : "Deficit"}
+                    balance={balance}
+                    icon={Icons.WALLET}
+                />
+                <NavItemComponent
+                    name={balance >= 0 ? "Surplus" : "Deficit"}
+                    balance={balance}
+                    icon={Icons.PIE}
+                />
+            </div>
+            <motion.button
+                whileHover={{opacity: 0.5}}
+                whileTap={{scale: 0.9}}
+                className={"text-2xl text-zinc-950 font-bold p-4 rounded-md border border-zinc-900 w-auto h-16 flex items-center"}
+            >
+                <FontAwesomeIcon icon={Icons.PLUS}/>
+            </motion.button>
+        </motion.nav>
     );
 }

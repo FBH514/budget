@@ -10,7 +10,8 @@
       theme: {
           extend: {
               fontFamily: {
-                  'sans': ['Oxygen', 'sans-serif']
+                  'sans': ['Oxygen', 'sans-serif'],
+                  'handwritten': ['Dancing Script', 'handwritten']
               }
           },
           screens: {
