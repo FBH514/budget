@@ -4,4 +4,6 @@ export interface Item {
     date?: string;
     shares?: number;
     price?: number;
+    isActive?: boolean;
+    handleOpen?: () => void;
 }

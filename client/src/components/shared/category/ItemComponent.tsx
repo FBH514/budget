@@ -1,18 +1,27 @@
 import {motion} from "framer-motion";
 import {Item} from "../../../types/Item.model.ts";
+import Modal from "../Modal/Modal.tsx";
+import React, {useState} from "react";
 
-export default function ItemComponent({item}: { item: Item }): JSX.Element {
+function Helper({ item }: { item: Item }): JSX.Element {
+
+    const [isActive, setIsActive] = useState<boolean>(false);
+    const handleOpen = (): void => setIsActive(true);
+
     return (
         <motion.div
-            whileHover={{scale: 0.95}}
+            whileHover={{ scale: 0.95 }}
             key={item.name}
             className={"p-2 text-zinc-100 text-2xl rounded-md shadow-md cursor-pointer bg-gradient-to-br from-indigo-700 to-blue-700"}
-            onClick={() => console.log(item)}
+            onClick={handleOpen}
         >
             <h2 className={"whitespace-nowrap font-thin"}>{item.name}</h2>
             <h3 className={"font-bold"}>{`$${item.amount}`}</h3>
+            <Modal isActive={isActive} />
         </motion.div>
-    )
+    );
 }
 
-// className={"p-4 border border-cyan-700 text-cyan-700 text-2xl rounded-md cursor-pointer"}
+Helper.displayName = "Item Component";
+const ItemComponent = React.memo(Helper);
+export default ItemComponent;

@@ -11,11 +11,12 @@ export interface HeaderItem {
 export default function Header(item: HeaderItem): JSX.Element {
     return (
         <header className={"grid items-center gap-4"}>
-            <section className={"flex items-center justify-between text-zinc-950"}>
+            <section className={"flex items-center justify-between gap-4 text-zinc-950"}>
                 <div className={"flex items-center gap-4 text-6xl font-bold"}>
                     {item.icon && <FontAwesomeIcon icon={item.icon}/>}
                     <h2>{item.title}</h2>
                 </div>
+                <hr className={"w-full bg-zinc-950 border-0 h-px rounded-md"}/>
                 <h3 className={"font-thin text-2xl p-2 rounded-md border border-zinc-950 shadow-md"}>
                     {`$${round(item.total)}`}
                 </h3>
