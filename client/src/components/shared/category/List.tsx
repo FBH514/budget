@@ -4,7 +4,7 @@ import {Item} from "../../../types/Item.model.ts";
 export default function List({items}: { items: Item[] }): JSX.Element {
 
     return (
-        <div className={"flex items-start gap-4 overflow-x-scroll"}>
+        <div className={"flex items-start gap-4 flex-wrap"}>
             {items.map((item, index) => <ItemComponent 
                 item={item} 
                 key={index}/>
