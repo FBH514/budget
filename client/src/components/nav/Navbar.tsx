@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Icons} from "../../utils/Icons.tsx";
 import {motion} from "framer-motion";
 import NavItemComponent from "./NavItemComponent.tsx";
-import Modal from "../shared/Modal/Modal.tsx";
+import AddModal from "../shared/Modals/AddModal.tsx";
 import {useState} from "react";
 
 enum Desktop {
@@ -34,10 +34,6 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
                     name={balance >= 0 ? "Surplus" : "Deficit"}
                     balance={balance}
                     icon={Icons.WALLET}/>
-                <NavItemComponent
-                    name={balance >= 0 ? "Surplus" : "Deficit"}
-                    balance={balance}
-                    icon={Icons.PIE}/>
             </div>
             <motion.button
                 whileHover={{scale: 1.05}}
@@ -47,7 +43,7 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
                 <h2>Add</h2>
                 <FontAwesomeIcon icon={Icons.PLUS}/>
             </motion.button>
-            {isActive && <Modal handleIsActive={handleIsActive}/>}
+            {isActive && <AddModal handleIsActive={handleIsActive}/>}
         </motion.nav>
     );
 }

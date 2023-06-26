@@ -3,18 +3,24 @@ import {Icons} from "../../../utils/Icons.tsx";
 import {AnimatePresence, motion} from "framer-motion";
 import React, {useRef, useState} from "react";
 
+interface EditProps {
+    handleIsActive: () => void,
+    name: string,
+    amount?: number
+}
+
 enum Desktop {
     MENU_BUTTON = "flex items-center justify-center gap-2 text-zinc-50 rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 text-2xl p-4"
 }
 
-function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
+function Helper(params: EditProps): JSX.Element {
 
     const [selected, setSelected] = useState<string>('');
     const nameRef = useRef<HTMLInputElement>(null);
     const amountRef = useRef<HTMLInputElement>(null);
 
     const handle = () => {
-        handleIsActive();
+        params.handleIsActive();
     }
 
     return (
@@ -29,7 +35,7 @@ function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
                     className={"p-8 bg-zinc-950 flex flex-col justify-between gap-4 rounded-md h-full"}>
 
                     <header className={"flex items-center justify-center gap-4 text-zinc-50 text-4xl"}>
-                        <h2>{selected ? `Insert a new ${selected}` : 'Insert a new entry'}</h2>
+                        <h2>Edit entry</h2>
                         <FontAwesomeIcon icon={Icons.MONEY_BAG}/>
                     </header>
 
@@ -38,30 +44,23 @@ function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
                             whileTap={{scale: 0.9}}
                             whileHover={{scale: 1.05}}
                             className={Desktop.MENU_BUTTON}
-                            onClick={() => setSelected('Income')}>
-                            Income
+                            onClick={() => setSelected('Name')}>
+                            Name
                         </motion.button>
                         <motion.button
                             whileTap={{scale: 0.9}}
                             whileHover={{scale: 1.05}}
                             className={Desktop.MENU_BUTTON}
-                            onClick={() => setSelected('Expense')}>
-                            Expenses
-                        </motion.button>
-                        <motion.button
-                            whileTap={{scale: 0.9}}
-                            whileHover={{scale: 1.05}}
-                            className={Desktop.MENU_BUTTON}
-                            onClick={() => setSelected('Investment')}>
-                            Investments
+                            onClick={() => setSelected('Amount')}>
+                            Amount
                         </motion.button>
                     </div>
 
-                    {selected !== '' && <form className={"grid gap-4"}>
+                    {selected === 'Name' && <form className={"grid gap-4"}>
                         <div className={"grid grid-cols-1 gap-4"}>
                             <div className={"grid gap-2"}>
                                 <label htmlFor={"name"} className={"text-xl text-zinc-50"}>
-                                    {`${selected} name`}
+                                    {`New name for ${params.name}`}
                                 </label>
                                 <input
                                     className={"p-2 rounded-md bg-zinc-50 text-zinc-950 placeholder:text-zinc-950 text-xl outline-none"}
@@ -70,9 +69,13 @@ function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
                                     ref={nameRef}
                                 />
                             </div>
+                        </div>
+                    </form>}
+                    {selected === 'Amount' && <form className={"grid gap-4"}>
+                        <div className={"grid grid-cols-1 gap-4"}>
                             <div className={"grid gap-2"}>
                                 <label htmlFor={"amount"} className={"text-xl text-zinc-50"}>
-                                    {`${selected} amount`}
+                                    {`New amount for ${params.name}`}
                                 </label>
                                 <input
                                     className={"p-2 rounded-md bg-zinc-50 text-zinc-950 placeholder:text-zinc-950 text-xl outline-none"}
@@ -109,6 +112,6 @@ function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
     );
 }
 
-Helper.displayName = "Modal";
-const Modal = React.memo(Helper);
-export default Modal;
+Helper.displayName = "Add Modal";
+const AddModal = React.memo(Helper);
+export default AddModal;
