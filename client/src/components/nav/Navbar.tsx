@@ -5,6 +5,7 @@ import {motion} from "framer-motion";
 import NavItemComponent from "./NavItemComponent.tsx";
 import AddModal from "../shared/Modals/AddModal.tsx";
 import {useState} from "react";
+import useKeyboard from "../../hooks/useKeyboard.tsx";
 
 enum Desktop {
     PARENT = "bg-gradient-to-br from-indigo-700 to-blue-700 p-4 flex items-center justify-between gap-4 shadow-md rounded-b-md"
@@ -19,9 +20,10 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
     const mobile = useMobile();
     const [isActive, setIsActive] = useState(false);
 
-    const handleIsActive = () => {
-        setIsActive(!isActive);
-    }
+    const close = (): void => setIsActive(false);
+    const open = (): void => setIsActive(true);
+
+    useKeyboard("Escape", close);
 
     return (
         <motion.nav
@@ -39,11 +41,11 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
                 whileHover={{scale: 1.05}}
                 whileTap={{scale: 0.9}}
                 className={"text-2xl text-zinc-50 font-bold p-4 rounded-md shadow-md w-auto h-16 flex items-center gap-2 bg-zinc-950"}
-                onClick={handleIsActive}>
+                onClick={open}>
                 <h2>Add</h2>
                 <FontAwesomeIcon icon={Icons.PLUS}/>
             </motion.button>
-            {isActive && <AddModal handleIsActive={handleIsActive}/>}
+            {isActive && <AddModal handleIsActive={close}/>}
         </motion.nav>
     );
 }

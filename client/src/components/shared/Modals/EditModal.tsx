@@ -26,7 +26,7 @@ function Helper(params: EditProps): JSX.Element {
     return (
         <AnimatePresence>
             <div
-                className={"absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 p-1"}>
+                className={"absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-2/3 p-1"}>
                 <motion.div
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
@@ -35,8 +35,8 @@ function Helper(params: EditProps): JSX.Element {
                     className={"p-8 bg-zinc-950 flex flex-col justify-between gap-4 rounded-md h-full"}>
 
                     <header className={"flex items-center justify-center gap-4 text-zinc-50 text-4xl"}>
-                        <h2>Edit entry</h2>
                         <FontAwesomeIcon icon={Icons.MONEY_BAG}/>
+                        <h2>{`Edit ${params.name}`}</h2>
                     </header>
 
                     <div className={"flex items-center justify-center gap-4"}>

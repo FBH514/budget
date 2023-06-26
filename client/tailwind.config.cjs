@@ -9,6 +9,9 @@
       ],
       theme: {
           extend: {
+              minHeight: {
+                '2/3': '66.6%'
+              },
               fontFamily: {
                   'sans': ['Oxygen', 'sans-serif'],
                   'handwritten': ['Dancing Script', 'handwritten']
