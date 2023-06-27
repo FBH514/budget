@@ -16,8 +16,8 @@ export default function Header(item: HeaderItem): JSX.Element {
                     {item.icon && <FontAwesomeIcon icon={item.icon}/>}
                     <h2>{item.title}</h2>
                 </div>
-                <hr className={"w-full bg-zinc-950 border-0 h-px rounded-md"}/>
-                <h3 className={"font-thin text-2xl p-2 rounded-md border border-zinc-950 shadow-md"}>
+                <hr className={"w-full bg-zinc-950 border-0 h-1 rounded-md"}/>
+                <h3 className={"font-bold text-2xl p-4 rounded-md shadow-md bg-gradient-to-br from-yellow-300 to-orange-300 border-2 border-zinc-950"}>
                     {`$${round(item.total)}`}
                 </h3>
             </section>
