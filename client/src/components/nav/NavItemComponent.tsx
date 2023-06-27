@@ -8,13 +8,15 @@ interface Item {
     icon?: IconDefinition
 }
 
+enum Desktop {
+    PARENT = "flex flex-col justify-center",
+    BALANCE = "text-2xl text-zinc-100 font-bold py-2 px-4 bg-zinc-950 rounded-md shadow-md w-fit flex items-center gap-2"
+}
+
 export default function NavItemComponent(item: Item) {
     return (
-        <div className={"flex flex-col justify-center"}>
-            <h1>{item.name}</h1>
-            <div
-                className={"text-2xl text-zinc-100 font-bold p-2 bg-zinc-950 rounded-md shadow-md w-fit flex items-center gap-2"}
-            >
+        <div className={Desktop.PARENT}>
+            <div className={Desktop.BALANCE}>
                 {item.balance && item.balance >= 0 ? (`$${round(item.balance)}`) : -`$${round(item.balance)}`}
                 {item.icon && <FontAwesomeIcon icon={item.icon}/>}
             </div>
