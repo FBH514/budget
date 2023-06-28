@@ -2,23 +2,26 @@ import {Item} from "../../../types/Item.model.ts";
 import React, {useState} from "react";
 import EditModal from "../Modals/EditModal.tsx";
 import useKeyboard from "../../../hooks/useKeyboard.tsx";
+import {motion} from "framer-motion";
 
 function Helper({item}: { item: Item }): JSX.Element {
 
     const [isActive, setIsActive] = useState(false);
-    const close = () => setIsActive(false);
-    const open = () => setIsActive(true);
+    const open = (): void => setIsActive(true);
+    const close = (): void => setIsActive(false);
     useKeyboard("Escape", close);
 
     return (
-        <div
+        <motion.div
+            whileHover={{scale: 1.05}}
+            whileTap={{scale: 0.9}}
             onClick={open}
             key={item.name}
-            className={"p-2 text-zinc-50 text-2xl rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 cursor-pointer border-2 border-zinc-950"}>
+            className={"px-4 py-2 text-zinc-50 text-2xl rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 cursor-pointer border-2 border-zinc-950"}>
             <h2 className={"whitespace-nowrap font-thin"}>{item.name}</h2>
             <h3 className={"font-bold"}>{`$${item.amount}`}</h3>
             {isActive && <EditModal handleIsActive={close} name={item.name}/>}
-        </div>
+        </motion.div>
     );
 }
 

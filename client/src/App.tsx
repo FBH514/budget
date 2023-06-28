@@ -8,7 +8,7 @@ import {calculateTotal} from "./utils/calculateTotal.ts";
 import {Icons} from "./utils/Icons.tsx";
 
 enum Desktop {
-    PARENT = "App bg-zinc-50 min-h-screen flex flex-col relative"
+    PARENT = "App bg-zinc-50 min-h-screen h-screen flex flex-col relative"
 }
 
 enum Mobile {
@@ -43,8 +43,8 @@ function Helper(): JSX.Element {
         <div className={mobile ? Mobile.PARENT : Desktop.PARENT}>
             <Navbar balance={(incomeBalance - expensesBalance)}/>
             <section
-                className={"grid gap-4 p-4 justify-center"}
-                style={{height: 'calc(100vh - 104px)'}}>
+                className={"grid gap-4 p-4 justify-center overflow-y-scroll"}
+                style={{height: 'calc(100vh - 72px)'}}>
                 <Category title={"Income"} data={income ?? placeholder} icon={Icons.MONEY_BAG}/>
                 <Category title={"Expenses"} data={expenses ?? placeholder} icon={Icons.CREDIT_CARD}/>
                 <Category title={"Investments"} data={investments ?? placeholder} icon={Icons.COINS}/>

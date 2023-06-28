@@ -8,7 +8,7 @@ import {useState} from "react";
 import useKeyboard from "../../hooks/useKeyboard.tsx";
 
 enum Desktop {
-    PARENT = "bg-gradient-to-br from-indigo-700 to-blue-700 py-2 px-4 flex items-center justify-between gap-4 shadow-md rounded-md my-2 mx-4 border-4 border-zinc-950"
+    PARENT = "bg-gradient-to-br from-indigo-700 to-blue-700 p-4 flex items-center justify-between gap-4 shadow-xl border-b-4 border-zinc-950"
 }
 
 enum Mobile {

@@ -8,9 +8,9 @@ enum Desktop {
     PARENT = "p-8 bg-zinc-950 flex flex-col justify-between gap-4 rounded-md h-full",
     CATEGORY_BUTTON = "flex items-center justify-center gap-2 text-zinc-50 rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 text-2xl p-4",
     ACTION_BUTTON = "p-4 text-zinc-50 rounded-md shadow-md flex items-center gap-4 border border-zinc-50 w-fit hover:text-zinc-950 hover:bg-zinc-50",
+    BUTTONS = "flex items-center justify-center gap-4",
     INPUT = "p-2 rounded-md bg-zinc-50 text-zinc-950 placeholder:text-zinc-950 text-xl outline-none",
     LABEL = "text-xl text-zinc-50",
-    BUTTONS = "flex items-center justify-center gap-4",
     HEADER = "flex items-center justify-center gap-4 text-zinc-50 text-4xl"
 }
 
@@ -48,7 +48,7 @@ function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
     const [selected, setSelected] = useState<string>('');
     const nameRef = useRef<HTMLInputElement>(null);
     const amountRef = useRef<HTMLInputElement>(null);
-    const handle = () => handleIsActive();
+    const close = () => handleIsActive();
 
     return (
         <AnimatePresence>
@@ -89,7 +89,7 @@ function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
                         <motion.button
                             whileTap={{scale: 0.9}}
                             className={Desktop.ACTION_BUTTON}
-                            onClick={handle}>
+                            onClick={close}>
                             <FontAwesomeIcon icon={Icons.CLOSE}/>
                             <h2>Close</h2>
                         </motion.button>

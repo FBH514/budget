@@ -6,7 +6,7 @@ import {calculateTotal} from "../../../utils/calculateTotal.ts";
 import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
 
 enum Desktop {
-    PARENT = "grid gap-4"
+    PARENT = "grid gap-4 py-4"
 }
 
 enum Mobile {
