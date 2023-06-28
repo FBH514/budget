@@ -13,8 +13,6 @@ function Helper({item}: { item: Item }): JSX.Element {
 
     return (
         <motion.div
-            whileHover={{scale: 1.05}}
-            whileTap={{scale: 0.9}}
             onClick={open}
             key={item.name}
             className={"px-4 py-2 text-zinc-50 text-2xl rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 cursor-pointer border-2 border-zinc-950"}>

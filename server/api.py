@@ -8,6 +8,7 @@ from starlette.requests import Request
 from dotenv import load_dotenv
 
 from database import Database
+from stock import Stock
 
 load_dotenv()
 app = FastAPI()
@@ -23,6 +24,7 @@ app.add_middleware(
 class Project:
     NAME: str = ''
     VERSION: str = ''
+    CACHE_LENGTH: int = (60**2) * 24 * 7
 
 
 def cache(seconds: int) -> callable:
@@ -37,14 +39,15 @@ def cache(seconds: int) -> callable:
 
 
 # GET http://localhost:8000/
-@cache((60**2) * 24 * 7)
+@cache(Project.CACHE_LENGTH)
 @app.get('/')
-async def root():
+async def root() -> dict:
+    """"""
     return {'message': 'FBH'}
 
 
 # GET http://localhost:8000/budget/income/
-@cache((60**2) * 24 * 7)
+@cache(Project.CACHE_LENGTH)
 @app.get('/budget/income/')
 async def income(response: Response) -> list:
     """"""
@@ -54,7 +57,7 @@ async def income(response: Response) -> list:
 
 
 # GET http://localhost:8000/budget/expenses/
-@cache((60**2) * 24 * 7)
+@cache(Project.CACHE_LENGTH)
 @app.get('/budget/expenses/')
 async def expenses(response: Response) -> list:
     """"""
@@ -64,10 +67,18 @@ async def expenses(response: Response) -> list:
 
 
 # GET http://localhost:8000/budget/investments/
-@cache((60**2) * 24 * 7)
+@cache(Project.CACHE_LENGTH)
 @app.get('/budget/investments/')
 async def investments(response: Response) -> list:
     """"""
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INVESTMENTS"))
     return [{'name': _[1], 'amount': _[2] * _[3]} for _ in data]
+
+
+# GET http://localhost:8000/budget/stocks/{ticker}/
+@cache(Project.CACHE_LENGTH)
+@app.get('/budget/stocks/{ticker}/')
+async def stock(response: Response, ticker: str) -> dict:
+    """"""
+    return Stock(ticker).data
