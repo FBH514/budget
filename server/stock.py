@@ -17,9 +17,13 @@ class Stock:
     @property
     def name(self) -> str:
         """Returns the Stock object's name"""
+        if self._ticker == "CASH":
+            return "Cash"
         return self._name
 
     @property
     def data(self) -> dict:
         """Returns the Stock object's financial data"""
+        if self._ticker == "CASH":
+            return {"currentPrice": 1}
         return self._data

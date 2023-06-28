@@ -73,7 +73,7 @@ async def investments(response: Response) -> list:
     """"""
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INVESTMENTS"))
-    return [{'name': _[1], 'amount': _[2] * _[3]} for _ in data]
+    return [{'name': _[1], 'amount': _[2] * Stock(_[1]).data.get("currentPrice")} for _ in data]
 
 
 # GET http://localhost:8000/budget/stocks/{ticker}/
@@ -82,3 +82,8 @@ async def investments(response: Response) -> list:
 async def stock(response: Response, ticker: str) -> dict:
     """"""
     return Stock(ticker).data
+
+
+def update_row(id: int) -> None:
+    """"""
+    pass

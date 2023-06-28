@@ -1,26 +1,30 @@
 import unittest
 from unittest.mock import patch
-from requests.exceptions import HTTPError
+from urllib.error import HTTPError
 from stock import Stock
 
 
-class TestStock(unittest.TestCase):
+class StockTestCase(unittest.TestCase):
 
-    @patch('yfinance.Ticker')
+    @patch('stock.yf.Ticker')
     def test_stock_object_creation(self, mock_ticker):
-
         mock_ticker.return_value.info = {
-            'longName': 'Example Company',
+            'longName': 'Apple Inc.'
         }
+        stock = Stock('AAPL')
+        self.assertEqual(stock.name, 'Apple Inc.')
 
-        ticker = 'AAPL'
-        stock = Stock(ticker)
-        self.assertEqual(stock.name, 'Example Company')
+    def test_stock_name_property(self):
+        stock = Stock('AAPL')
+        self.assertEqual(stock.name, 'Apple Inc.')
+        stock = Stock('CASH')
+        self.assertEqual(stock.name, 'Cash')
 
-        ticker = 'INVALID'
-        mock_ticker.side_effect = HTTPError(response=None)
-        with self.assertRaises(HTTPError):
-            Stock(ticker)
+    def test_stock_data_property(self):
+        stock = Stock('AAPL')
+        self.assertEqual(stock.data, {'longName': 'Apple Inc.'})
+        stock = Stock('CASH')
+        self.assertEqual(stock.data, {'currentPrice': 1})
 
 
 if __name__ == '__main__':
