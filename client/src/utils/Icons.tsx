@@ -5,6 +5,7 @@ import {faCreditCard} from "@fortawesome/free-solid-svg-icons/faCreditCard";
 import {faSackDollar} from "@fortawesome/free-solid-svg-icons/faSackDollar";
 import {faCoins} from "@fortawesome/free-solid-svg-icons/faCoins";
 import {faClose} from "@fortawesome/free-solid-svg-icons/faClose";
+import {faCalendarAlt} from "@fortawesome/free-solid-svg-icons/faCalendarAlt";
 
 export const Icons = {
     PLUS: faPlus,
@@ -13,5 +14,6 @@ export const Icons = {
     CREDIT_CARD: faCreditCard,
     MONEY_BAG: faSackDollar,
     COINS: faCoins,
-    CLOSE: faClose
+    CLOSE: faClose,
+    CALENDAR: faCalendarAlt
 }

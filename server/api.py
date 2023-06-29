@@ -74,9 +74,7 @@ async def investments(response: Response) -> list:
     """"""
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INVESTMENTS"))
-    data = [Utils.select_investment_row(_[0], _[1], _[2]) for _ in data]
-    print(data)
-    return data
+    return [Utils.select_investment_row(_[0], _[1], _[2]) for _ in data]
 
 
 # GET http://localhost:8000/budget/stocks/{ticker}/

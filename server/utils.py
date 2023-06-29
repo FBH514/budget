@@ -10,11 +10,11 @@ class Utils:
     load_dotenv()
 
     @staticmethod
-    def update_stock_price(id: int) -> float:
+    def update_stock_price(id: int, name: str) -> float:
         """"""
         query = """UPDATE investments SET price = :price WHERE id = :id"""
-        current_price = Stock(_[1]).current_price
         with Database(os.getenv("NAME")) as db:
+            current_price = Stock(name).current_price
             db.execute(query, {
                 "id": id,
                 "price": current_price
@@ -24,7 +24,7 @@ class Utils:
     @staticmethod
     def select_investment_row(id: int, name: str, shares: float) -> dict:
         """"""
-        current_price = Utils.update_stock_price(id)
+        current_price = Utils.update_stock_price(id, name)
         return {'name': name, 'amount': shares * current_price}
 
     @staticmethod
