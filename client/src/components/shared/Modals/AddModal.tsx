@@ -4,7 +4,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import React, {RefObject, useRef, useState} from "react";
 
 enum Desktop {
-    PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-2/3 p-1",
+    PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-2/3 p-1 z-50",
     PARENT = "p-8 bg-zinc-950 flex flex-col justify-between gap-4 rounded-md h-full",
     CATEGORY_BUTTON = "flex items-center justify-center gap-2 text-zinc-50 rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 text-2xl p-4",
     ACTION_BUTTON = "p-4 text-zinc-50 rounded-md shadow-md flex items-center gap-4 border border-zinc-50 w-fit hover:text-zinc-950 hover:bg-zinc-50",
@@ -43,12 +43,12 @@ function Input(params: InputProps): JSX.Element {
     );
 }
 
-function Helper({handleIsActive}: {handleIsActive: () => void }): JSX.Element {
+function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
 
     const [selected, setSelected] = useState<string>('');
     const nameRef = useRef<HTMLInputElement>(null);
     const amountRef = useRef<HTMLInputElement>(null);
-    const close = () => handleIsActive();
+    const close = () => handleClose();
 
     return (
         <AnimatePresence>

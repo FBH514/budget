@@ -27,3 +27,8 @@ class Stock:
         if self._ticker == "CASH":
             return {"currentPrice": 1}
         return self._data
+
+    @property
+    def current_price(self) -> float:
+        """"""
+        return self._data.get("currentPrice")

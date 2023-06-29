@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 from database import Database
 from stock import Stock
+from utils import Utils
 
 load_dotenv()
 app = FastAPI()
@@ -73,7 +74,9 @@ async def investments(response: Response) -> list:
     """"""
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INVESTMENTS"))
-    return [{'name': _[1], 'amount': _[2] * Stock(_[1]).data.get("currentPrice")} for _ in data]
+    data = [Utils.select_investment_row(_[0], _[1], _[2]) for _ in data]
+    print(data)
+    return data
 
 
 # GET http://localhost:8000/budget/stocks/{ticker}/
@@ -82,8 +85,3 @@ async def investments(response: Response) -> list:
 async def stock(response: Response, ticker: str) -> dict:
     """"""
     return Stock(ticker).data
-
-
-def update_row(id: int) -> None:
-    """"""
-    pass

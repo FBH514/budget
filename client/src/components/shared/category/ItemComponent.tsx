@@ -18,7 +18,7 @@ function Helper({item}: { item: Item }): JSX.Element {
             className={"px-4 py-2 text-zinc-50 text-2xl rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 cursor-pointer border-2 border-zinc-950"}>
             <h2 className={"whitespace-nowrap font-thin"}>{item.name}</h2>
             <h3 className={"font-bold"}>{`$${item.amount}`}</h3>
-            {isActive && <EditModal handleIsActive={close} name={item.name}/>}
+            {isActive && <EditModal handleClose={close} name={item.name}/>}
         </motion.div>
     );
 }

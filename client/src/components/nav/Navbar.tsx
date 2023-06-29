@@ -44,7 +44,7 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
                 onClick={open}>
                 <FontAwesomeIcon icon={Icons.PLUS}/>
             </motion.button>
-            {isActive && <AddModal handleIsActive={close}/>}
+            {isActive && <AddModal handleClose={close}/>}
         </motion.nav>
     );
 }
