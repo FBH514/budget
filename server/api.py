@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from database import Database
 from stock import Stock
-from utils import Utils
+from investmentutils import InvestmentUtils
 
 load_dotenv()
 app = FastAPI()
@@ -23,12 +23,18 @@ app.add_middleware(
 
 
 class Project:
+    """Defines project information with constants"""
     NAME: str = ''
     VERSION: str = ''
     CACHE_LENGTH: int = (60**2) * 24 * 7
 
 
 def cache(seconds: int) -> callable:
+    """
+    Defines header caching
+    :param seconds: int
+    :return: callable
+    """
     def decorator(func: callable) -> callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs) -> callable:
@@ -51,7 +57,11 @@ async def root() -> dict:
 @cache(Project.CACHE_LENGTH)
 @app.get('/budget/income/')
 async def income(response: Response) -> list:
-    """"""
+    """
+    Returns income table
+    :param response: Response
+    :return: list
+    """
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INCOME"))
     return [{'name': _[1], 'amount': _[2]} for _ in data]
@@ -61,7 +71,11 @@ async def income(response: Response) -> list:
 @cache(Project.CACHE_LENGTH)
 @app.get('/budget/expenses/')
 async def expenses(response: Response) -> list:
-    """"""
+    """
+    Returns expenses table
+    :param response: Response
+    :return: dict
+    """
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("EXPENSES"))
     return [{'name': _[1], 'amount': _[2]} for _ in data]
@@ -71,15 +85,24 @@ async def expenses(response: Response) -> list:
 @cache(Project.CACHE_LENGTH)
 @app.get('/budget/investments/')
 async def investments(response: Response) -> list:
-    """"""
+    """
+    Returns investments table
+    :param response: Response
+    :return: list
+    """
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INVESTMENTS"))
-    return [Utils.select_investment_row(_[0], _[1], _[2]) for _ in data]
+    return [InvestmentUtils.select_investment_row(_[0], _[1], _[2]) for _ in data]
 
 
 # GET http://localhost:8000/budget/stocks/{ticker}/
 @cache(Project.CACHE_LENGTH)
 @app.get('/budget/stocks/{ticker}/')
 async def stock(response: Response, ticker: str) -> dict:
-    """"""
+    """
+    Returns stock data for ticker parameter
+    :param response: Response
+    :param ticker: str
+    :return: dict
+    """
     return Stock(ticker).data

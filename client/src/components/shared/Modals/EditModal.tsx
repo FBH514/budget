@@ -3,12 +3,6 @@ import {Icons} from "../../../utils/Icons.tsx";
 import {AnimatePresence, motion} from "framer-motion";
 import React, {useRef, useState} from "react";
 
-// interface EditProps {
-//     handleClose: () => void,
-//     name: string,
-//     amount?: number
-// }
-
 enum Desktop {
     PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-2/3 p-1",
     PARENT = "p-8 bg-zinc-950 flex flex-col justify-between gap-4 rounded-md h-full z-50",

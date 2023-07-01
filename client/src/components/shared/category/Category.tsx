@@ -28,7 +28,3 @@ export default function Category(item: CategoryItem): JSX.Element {
         </div>
     )
 }
-
-// Helper.displayName = title;
-// const Category = React.memo(Helper);
-// export default Category;

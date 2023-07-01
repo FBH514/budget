@@ -7,9 +7,11 @@ import AddModal from "../shared/Modals/AddModal.tsx";
 import {useState} from "react";
 import useKeyboard from "../../hooks/useKeyboard.tsx";
 import {getMonth} from "../../utils/time.ts";
+import {ButtonStyle} from "../../styles/button.style.ts";
 
 enum Desktop {
-    PARENT = "bg-gradient-to-br from-indigo-700 to-blue-700 p-4 flex items-center justify-between gap-4 shadow-xl border-b-4 border-zinc-950"
+    PARENT = "bg-gradient-to-br from-indigo-700 to-blue-700 p-4 flex items-center justify-between gap-4 shadow-xl border-b-4 border-zinc-950",
+    MONTH = "flex items-center gap-2 text-2xl text-zinc-50 font-bold py-2 px-4 bg-zinc-950 rounded-md shadow-md"
 }
 
 enum Mobile {
@@ -22,7 +24,6 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
     const [isActive, setIsActive] = useState(false);
     const close = (): void => setIsActive(false);
     const open = (): void => setIsActive(true);
-
     useKeyboard("Escape", close);
 
     return (
@@ -41,14 +42,14 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
                 <motion.button
                     whileHover={{scale: 1.05}}
                     whileTap={{scale: 0.9}}
-                    className={"text-2xl text-zinc-50 font-bold py-2 px-4 rounded-md shadow-md flex items-center gap-2 bg-zinc-950"}
+                    className={ButtonStyle.ACTION_BUTTON}
                     onClick={open}>
                     <FontAwesomeIcon icon={Icons.PLUS}/>
                     Add Entry
                 </motion.button>
                 {isActive && <AddModal handleClose={close}/>}
             </div>
-            <div className={"flex items-center gap-2 text-2xl text-zinc-50 font-bold py-2 px-4 bg-zinc-950 rounded-md shadow-md"}>
+            <div className={Desktop.MONTH}>
                 <FontAwesomeIcon icon={Icons.CALENDAR}/>
                 <h2>{getMonth()} Budget</h2>
             </div>

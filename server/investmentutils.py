@@ -5,17 +5,21 @@ from stock import Stock
 from dotenv import load_dotenv
 
 
-class Utils:
-    """"""
+class InvestmentUtils:
+    """Defines an InvestmentUtils class with static methods performing verbose operations"""
     load_dotenv()
 
     @staticmethod
     def update_stock_price(id: int, name: str) -> float:
-        """"""
-        query = """UPDATE investments SET price = :price WHERE id = :id"""
+        """
+        Updates price column in database investments table.
+        :param id: int
+        :param name: str
+        :return: float
+        """
         with Database(os.getenv("NAME")) as db:
             current_price = Stock(name).current_price
-            db.execute(query, {
+            db.execute(os.getenv("UPDATE_INVESTMENT_PRICE"), {
                 "id": id,
                 "price": current_price
             })
@@ -23,16 +27,27 @@ class Utils:
 
     @staticmethod
     def select_investment_row(id: int, name: str, shares: float) -> dict:
-        """"""
-        current_price = Utils.update_stock_price(id, name)
+        """
+        Selects name and shares columns from the database's investments table.
+        :param id: int
+        :param name: str
+        :param shares: float
+        :return: dict
+        """
+        current_price = InvestmentUtils.update_stock_price(id, name)
         return {'name': name, 'amount': shares * current_price}
 
     @staticmethod
     def update_investment_row(id: int, name: str, shares: float) -> None:
-        """"""
+        """
+        Update all column in the database's investments table.
+        :param id: int
+        :param name: str
+        :param shares: float
+        :return: None
+        """
         current_price: float = Stock(name).current_price
-        query = """UPDATE investments set name = :name, shares = :shares, price = :price where id = :id"""
         with Database(os.getenv("NAME")) as db:
-            db.execute(query, {
+            db.execute(os.getenv("UPDATE_INVESTMENT_ROW"), {
                 "id": id, "name": name, "shares": shares, "price": current_price
             })
