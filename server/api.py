@@ -27,6 +27,9 @@ class Project:
     NAME: str = ''
     VERSION: str = ''
     CACHE_LENGTH: int = (60**2) * 24 * 7
+    CATEGORIES: list[str] = [
+        "Income", "Expenses", "Investments"
+    ]
 
 
 def cache(seconds: int) -> callable:
@@ -106,3 +109,30 @@ async def stock(response: Response, ticker: str) -> dict:
     :return: dict
     """
     return Stock(ticker).data
+
+
+# POST http://localhost:8000/budget/add-entry/
+@app.post('/budget/add-entry/')
+async def add_entry(request: Request) -> dict:
+    """"""
+    data = await request.json()
+
+    name: str = data.get('name')
+    amount = data.get('amount')
+    price = data.get('price')
+    shares = data.get('shares')
+    category = data.get('category')
+
+    if category not in Project.CATEGORIES or len(name) < 2:
+        return {}
+
+    with Database(os.getenv("NAME")) as db:
+        if category == Project.CATEGORIES[2]:
+            db.execute(f"""INSERT INTO {category} (name, price, shares) VALUES (:name, :price, :shares)""", {
+                'name': name, 'price': price, 'shares': shares
+            })
+        else:
+            db.execute(f"""INSERT INTO {category} (name, amount) VALUES (:name, :amount)""", {
+                'name': name, 'amount': amount
+            })
+    return {'name': data.get('name'), 'amount': data.get('amount'), 'category': data.get('category')}

@@ -40,7 +40,7 @@ function Helper({handleClose, name}: {
                         <h2>{`Edit ${name}`}</h2>
                     </header>
 
-                    <div className={"flex items-center justify-center gap-4"}>
+                    <div className={Desktop.BUTTONS}>
                         <motion.button
                             whileTap={{scale: 0.9}}
                             whileHover={{scale: 1.05}}
@@ -88,7 +88,7 @@ function Helper({handleClose, name}: {
                         </motion.button>
                         <motion.button
                             whileTap={{scale: 0.9}}
-                            className={"p-4 text-zinc-50 rounded-md shadow-md flex items-center gap-4 border border-zinc-50 w-fit hover:text-zinc-950 hover:bg-zinc-50"}
+                            className={Desktop.ACTION_BUTTON}
                             onClick={() => console.log("Saving")}>
                             <FontAwesomeIcon icon={Icons.PLUS}/>
                             <h2>Save</h2>

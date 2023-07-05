@@ -2,9 +2,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Icons} from "../../../utils/Icons.tsx";
 import {AnimatePresence, motion} from "framer-motion";
 import React, {RefObject, useRef, useState} from "react";
+import {Endpoints, POST} from "../../../utils/requests.ts";
 
 enum Desktop {
-    PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-2/3 p-1 z-50",
+    PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-fit p-1 z-50",
     PARENT = "p-8 bg-zinc-950 flex flex-col justify-between gap-4 rounded-md h-full",
     CATEGORY_BUTTON = "flex items-center justify-center gap-2 text-zinc-50 rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 text-2xl p-4",
     ACTION_BUTTON = "p-4 text-zinc-50 rounded-md shadow-md flex items-center gap-4 border border-zinc-50 w-fit hover:text-zinc-950 hover:bg-zinc-50",
@@ -22,9 +23,9 @@ const categories = [
 
 interface InputProps {
     selected: string;
-    ref: RefObject<HTMLInputElement>;
     name: string;
     type?: string;
+    inputRef: RefObject<HTMLInputElement>;
 }
 
 function Input(params: InputProps): JSX.Element {
@@ -37,7 +38,7 @@ function Input(params: InputProps): JSX.Element {
                 className={Desktop.INPUT}
                 type={params.type ? params.type : "text"}
                 name={params.name}
-                ref={params.ref}
+                ref={params.inputRef}
             />
         </div>
     );
@@ -48,7 +49,28 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
     const [selected, setSelected] = useState<string>('');
     const nameRef = useRef<HTMLInputElement>(null);
     const amountRef = useRef<HTMLInputElement>(null);
+    const sharesRef = useRef<HTMLInputElement>(null);
+    const priceRef = useRef<HTMLInputElement>(null);
     const close = () => handleClose();
+
+    const isValidSubmission = (): boolean => {
+        if (selected === 'Investments') {
+            return !!(nameRef && sharesRef && priceRef)
+        }
+        return !!(nameRef && amountRef);
+    }
+
+    async function handleSubmit(): Promise<void> {
+        if (!isValidSubmission()) {
+            return;
+        }
+        await POST(Endpoints.ADD_ENTRY, {
+            name: nameRef.current?.value,
+            amount: amountRef.current?.value,
+            category: selected
+        });
+        close();
+    }
 
     return (
         <AnimatePresence>
@@ -62,7 +84,7 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
 
                     <header className={Desktop.HEADER}>
                         <FontAwesomeIcon icon={Icons.MONEY_BAG}/>
-                        <h2>{selected ? `Insert a new ${selected}` : 'Insert a new entry'}</h2>
+                        <h2>{selected ? `Insert a new ${selected} entry` : 'Insert a new entry'}</h2>
                     </header>
 
                     <div className={Desktop.BUTTONS}>
@@ -80,8 +102,25 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
 
                     {selected !== '' && <form className={"grid gap-4"}>
                         <div className={"grid grid-cols-1 gap-4"}>
-                            <Input selected={selected} ref={nameRef} name={"name"}/>
-                            <Input selected={selected} ref={amountRef} name={"amount"} type={"text"}/>
+                            <Input selected={selected} inputRef={nameRef} name={"Name"}/>
+                            {selected !== 'Investments' && <Input
+                                selected={selected}
+                                inputRef={amountRef}
+                                name={"Amount"}
+                                type={"text"}/>
+                            }
+                            {selected === 'Investments' && <Input
+                                selected={selected}
+                                inputRef={priceRef}
+                                name={"Price"}
+                                type={"text"}/>
+                            }
+                            {selected === 'Investments' && <Input
+                                selected={selected}
+                                inputRef={sharesRef}
+                                name={"Shares"}
+                                type={"text"}/>
+                            }
                         </div>
                     </form>}
 
@@ -96,7 +135,7 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
                         <motion.button
                             whileTap={{scale: 0.9}}
                             className={"p-4 text-zinc-50 rounded-md shadow-md flex items-center gap-4 border border-zinc-50 w-fit hover:text-zinc-950 hover:bg-zinc-50"}
-                            onClick={() => console.log("Saving")}>
+                            onClick={async () => handleSubmit()}>
                             <FontAwesomeIcon icon={Icons.PLUS}/>
                             <h2>Save</h2>
                         </motion.button>
