@@ -23,13 +23,23 @@ app.add_middleware(
 
 
 class Project:
-    """Defines project information with constants"""
-    NAME: str = ''
-    VERSION: str = ''
+    """Defines project constants"""
+    PORT: int = 8000
+    HOST: str = f'http://localhost:{PORT}/'
+    NAME: str = 'budget'
+    VERSION: str = 'v1'
     CACHE_LENGTH: int = (60**2) * 24 * 7
     CATEGORIES: list[str] = [
         "Income", "Expenses", "Investments"
     ]
+    ROUTES = {
+        'root': '/',
+        'income': f'/{NAME}/{VERSION}/income/',
+        'expenses': f'/{NAME}/{VERSION}/expenses/',
+        'investments': f'/{NAME}/{VERSION}/investments/',
+        'add_entry': f'/{NAME}/{VERSION}/add-entry/',
+        'ticker': f'/{NAME}/{VERSION}/tickers/' + '{ticker}'
+    }
 
 
 def cache(seconds: int) -> callable:
@@ -50,15 +60,18 @@ def cache(seconds: int) -> callable:
 
 # GET http://localhost:8000/
 @cache(Project.CACHE_LENGTH)
-@app.get('/')
+@app.get(Project.ROUTES['root'])
 async def root() -> dict:
-    """"""
+    """
+    API root
+    :return: dict
+    """
     return {'message': 'FBH'}
 
 
-# GET http://localhost:8000/budget/income/
+# GET http://localhost:8000/budget/v1/income/
 @cache(Project.CACHE_LENGTH)
-@app.get('/budget/income/')
+@app.get(Project.ROUTES['income'])
 async def income(response: Response) -> list:
     """
     Returns income table
@@ -70,9 +83,9 @@ async def income(response: Response) -> list:
     return [{'name': _[1], 'amount': _[2]} for _ in data]
 
 
-# GET http://localhost:8000/budget/expenses/
+# GET http://localhost:8000/budget/v1/expenses/
 @cache(Project.CACHE_LENGTH)
-@app.get('/budget/expenses/')
+@app.get(Project.ROUTES['expenses'])
 async def expenses(response: Response) -> list:
     """
     Returns expenses table
@@ -84,9 +97,9 @@ async def expenses(response: Response) -> list:
     return [{'name': _[1], 'amount': _[2]} for _ in data]
 
 
-# GET http://localhost:8000/budget/investments/
+# GET http://localhost:8000/budget/v1/investments/
 @cache(Project.CACHE_LENGTH)
-@app.get('/budget/investments/')
+@app.get(Project.ROUTES['investments'])
 async def investments(response: Response) -> list:
     """
     Returns investments table
@@ -98,12 +111,12 @@ async def investments(response: Response) -> list:
     return [InvestmentUtils.select_investment_row(_[0], _[1], _[2]) for _ in data]
 
 
-# GET http://localhost:8000/budget/stocks/{ticker}/
+# GET http://localhost:8000/budget/v1/tickers/{ticker}/
 @cache(Project.CACHE_LENGTH)
-@app.get('/budget/stocks/{ticker}/')
-async def stock(response: Response, ticker: str) -> dict:
+@app.get(Project.ROUTES['ticker'])
+async def tickers(response: Response, ticker: str) -> dict:
     """
-    Returns stock data for ticker parameter
+    Returns ticker data for parameter input
     :param response: Response
     :param ticker: str
     :return: dict
@@ -111,8 +124,8 @@ async def stock(response: Response, ticker: str) -> dict:
     return Stock(ticker).data
 
 
-# POST http://localhost:8000/budget/add-entry/
-@app.post('/budget/add-entry/')
+# POST http://localhost:8000/budget/v1/add-entry/
+@app.post(Project.ROUTES['add_entry'])
 async def add_entry(request: Request) -> dict:
     """"""
     data = await request.json()
@@ -135,4 +148,6 @@ async def add_entry(request: Request) -> dict:
             db.execute(f"""INSERT INTO {category} (name, amount) VALUES (:name, :amount)""", {
                 'name': name, 'amount': amount
             })
-    return {'name': data.get('name'), 'amount': data.get('amount'), 'category': data.get('category')}
+    if category != Project.CATEGORIES[2]:
+        return {'name': name, 'amount': amount}
+    return {'name': name, 'price': price, 'shares': shares}
