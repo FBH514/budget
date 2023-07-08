@@ -21,4 +21,4 @@ function Helper(params: TagProps): JSX.Element {
 
 Helper.displayName = "Price Tag"
 const PriceTag = React.memo(Helper);
-export default PriceTag
+export default PriceTag;

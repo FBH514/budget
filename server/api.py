@@ -131,10 +131,10 @@ async def add_entry(request: Request) -> dict:
     data = await request.json()
 
     name: str = data.get('name')
-    amount = data.get('amount')
-    price = data.get('price')
-    shares = data.get('shares')
-    category = data.get('category')
+    amount: str = data.get('amount')
+    price: str = data.get('price')
+    shares: str = data.get('shares')
+    category: str = data.get('category')
 
     if category not in Project.CATEGORIES or len(name) < 2:
         return {}

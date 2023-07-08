@@ -3,12 +3,11 @@ import {Icons} from "../../../utils/Icons.tsx";
 import {AnimatePresence, motion} from "framer-motion";
 import React, {RefObject, useRef, useState} from "react";
 import {Endpoints, POST} from "../../../utils/requests.ts";
+import {ModalStyles} from "../../../styles/modal.style.ts";
 
 enum Desktop {
     PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-fit p-1 z-50",
     PARENT = "p-8 bg-zinc-950 flex flex-col justify-between gap-4 rounded-md h-full",
-    CATEGORY_BUTTON = "flex items-center justify-center gap-2 text-zinc-50 rounded-md shadow-md bg-gradient-to-br from-indigo-700 to-blue-700 text-2xl p-4",
-    ACTION_BUTTON = "p-4 text-zinc-50 rounded-md shadow-md flex items-center gap-4 border border-zinc-50 w-fit hover:text-zinc-950 hover:bg-zinc-50",
     BUTTONS = "flex items-center justify-center gap-4",
     INPUT = "p-2 rounded-md bg-zinc-50 text-zinc-950 placeholder:text-zinc-950 text-xl outline-none",
     LABEL = "text-xl text-zinc-50",
@@ -28,21 +27,18 @@ interface InputProps {
     inputRef: RefObject<HTMLInputElement>;
 }
 
-function Input(params: InputProps): JSX.Element {
-    return (
-        <div className={"grid gap-2"}>
-            <label htmlFor={params.name} className={Desktop.LABEL}>
-                {`${params.selected} ${params.name}`}
-            </label>
-            <input
-                className={Desktop.INPUT}
-                type={params.type ? params.type : "text"}
-                name={params.name}
-                ref={params.inputRef}
-            />
-        </div>
-    );
-}
+const Input = (params: InputProps): JSX.Element => (
+    <div className={"grid gap-2"}>
+        <label htmlFor={params.name} className={Desktop.LABEL}>
+            {`${params.selected} ${params.name}`}
+        </label>
+        <input
+            className={Desktop.INPUT}
+            type={params.type ? params.type : "text"}
+            name={params.name}
+            ref={params.inputRef}/>
+    </div>
+);
 
 function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
 
@@ -93,7 +89,7 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
                                 key={item}
                                 whileTap={{scale: 0.9}}
                                 whileHover={{scale: 1.05}}
-                                className={Desktop.CATEGORY_BUTTON}
+                                className={ModalStyles.CATEGORY_BUTTON}
                                 onClick={() => setSelected(item)}>
                                 {item}
                             </motion.button>
@@ -127,20 +123,19 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
                     <div className={Desktop.BUTTONS}>
                         <motion.button
                             whileTap={{scale: 0.9}}
-                            className={Desktop.ACTION_BUTTON}
+                            className={ModalStyles.ACTION_BUTTON}
                             onClick={close}>
                             <FontAwesomeIcon icon={Icons.CLOSE}/>
                             <h2>Close</h2>
                         </motion.button>
                         <motion.button
                             whileTap={{scale: 0.9}}
-                            className={"p-4 text-zinc-50 rounded-md shadow-md flex items-center gap-4 border border-zinc-50 w-fit hover:text-zinc-950 hover:bg-zinc-50"}
+                            className={ModalStyles.ACTION_BUTTON}
                             onClick={async () => handleSubmit()}>
                             <FontAwesomeIcon icon={Icons.PLUS}/>
                             <h2>Save</h2>
                         </motion.button>
                     </div>
-
                 </motion.div>
             </div>
         </AnimatePresence>
