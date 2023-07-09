@@ -37,8 +37,9 @@ class Project:
         'income': f'/{NAME}/{VERSION}/income/',
         'expenses': f'/{NAME}/{VERSION}/expenses/',
         'investments': f'/{NAME}/{VERSION}/investments/',
+        'ticker': f'/{NAME}/{VERSION}/tickers/' + '{ticker}',
         'add_entry': f'/{NAME}/{VERSION}/add-entry/',
-        'ticker': f'/{NAME}/{VERSION}/tickers/' + '{ticker}'
+        'update_entry': f'/{NAME}/{VERSION}/update-entry/'
     }
 
 
@@ -80,7 +81,7 @@ async def income(response: Response) -> list:
     """
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INCOME"))
-    return [{'name': _[1], 'amount': _[2]} for _ in data]
+    return [{'id': _[0], 'name': _[1], 'amount': _[2]} for _ in data]
 
 
 # GET http://localhost:8000/budget/v1/expenses/
@@ -94,7 +95,7 @@ async def expenses(response: Response) -> list:
     """
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("EXPENSES"))
-    return [{'name': _[1], 'amount': _[2]} for _ in data]
+    return [{'id': _[0], 'name': _[1], 'amount': _[2]} for _ in data]
 
 
 # GET http://localhost:8000/budget/v1/investments/
@@ -151,3 +152,15 @@ async def add_entry(request: Request) -> dict:
     if category != Project.CATEGORIES[2]:
         return {'name': name, 'amount': amount}
     return {'name': name, 'price': price, 'shares': shares}
+
+
+# PUT http://localhost:8000/budget/v1/update-entry/
+@app.put(Project.ROUTES['update_entry'])
+async def update_entry(request: Request) -> dict:
+    """"""
+    data: dict = await request.json()
+    with Database(os.getenv('NAME')) as db:
+        db.execute(f"""UPDATE {data.get('category')} 
+        SET name = :name, amount = :amount WHERE id = :id""")
+    return {}
+

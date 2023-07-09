@@ -21,11 +21,29 @@ export async function POST(endpoint: string, data: unknown): Promise<unknown> {
     return await response.json();
 }
 
+export async function PUT(endpoint: string, data: unknown): Promise<unknown> {
+    const response = await fetch(endpoint, {
+        method: "PUT",
+        headers: HEADERS,
+        body: JSON.stringify(data)
+    });
+    return await response.json();
+}
+
+export async function DELETE(endpoint: string): Promise<unknown> {
+    const response = await fetch(endpoint, {
+        method: "DELETE",
+        headers: HEADERS
+    });
+    return await response.json();
+}
+
 export enum Endpoints {
     INCOME = `${HOST}/${NAME}/${VERSION}/income/`,
     INVESTMENTS = `${HOST}/${NAME}/${VERSION}/investments/`,
     EXPENSES = `${HOST}/${NAME}/${VERSION}/expenses/`,
     ADD_ENTRY = `${HOST}/${NAME}/${VERSION}/add-entry/`,
+    UPDATE_ENTRY = `${HOST}/${NAME}/${VERSION}/update-entry/`
 }
 
 export enum QueryKeys {

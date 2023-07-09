@@ -18,7 +18,7 @@ function Helper({item}: { item: Item }): JSX.Element {
         <div onClick={open} key={item.name} className={Desktop.PARENT}>
             <h2 className={"whitespace-nowrap font-thin"}>{item.name}</h2>
             <h3 className={"font-bold"}>{`$${item.amount}`}</h3>
-            {isActive && <EditModal handleClose={close} name={item.name}/>}
+            {isActive && <EditModal handleClose={close} item={item}/>}
         </div>
     );
 }

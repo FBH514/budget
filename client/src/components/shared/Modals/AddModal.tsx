@@ -4,6 +4,7 @@ import {AnimatePresence, motion} from "framer-motion";
 import React, {RefObject, useRef, useState} from "react";
 import {Endpoints, POST} from "../../../utils/requests.ts";
 import {ModalStyles} from "../../../styles/modal.style.ts";
+import {FX} from "../../../styles/fx.model.ts";
 
 enum Desktop {
     PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-fit p-1 z-50",
@@ -42,7 +43,7 @@ const Input = (params: InputProps): JSX.Element => (
 
 function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
 
-    const [selected, setSelected] = useState<string>('');
+    const [category, setCategory] = useState<string>('');
     const nameRef = useRef<HTMLInputElement>(null);
     const amountRef = useRef<HTMLInputElement>(null);
     const sharesRef = useRef<HTMLInputElement>(null);
@@ -50,7 +51,7 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
     const close = () => handleClose();
 
     const isValidSubmission = (): boolean => {
-        if (selected === 'Investments') {
+        if (category === 'Investments') {
             return !!(nameRef && sharesRef && priceRef)
         }
         return !!(nameRef && amountRef);
@@ -63,7 +64,7 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
         await POST(Endpoints.ADD_ENTRY, {
             name: nameRef.current?.value,
             amount: amountRef.current?.value,
-            category: selected
+            category: category
         });
         close();
     }
@@ -72,15 +73,15 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
         <AnimatePresence>
             <div className={Desktop.PARENT_CONTAINER}>
                 <motion.div
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
-                    transition={{duration: 0.2}}
+                    initial={FX.ANIMATE_INITIAL}
+                    animate={FX.ANIMATE_FINAL}
+                    exit={FX.ANIMATE_EXIT}
+                    transition={FX.TRANSITION}
                     className={Desktop.PARENT}>
 
                     <header className={Desktop.HEADER}>
                         <FontAwesomeIcon icon={Icons.MONEY_BAG}/>
-                        <h2>{selected ? `Insert a new ${selected} entry` : 'Insert a new entry'}</h2>
+                        <h2>{category ? `Insert a new ${category} entry` : 'Insert a new entry'}</h2>
                     </header>
 
                     <div className={Desktop.BUTTONS}>
@@ -90,29 +91,29 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
                                 whileTap={{scale: 0.9}}
                                 whileHover={{scale: 1.05}}
                                 className={ModalStyles.CATEGORY_BUTTON}
-                                onClick={() => setSelected(item)}>
+                                onClick={() => setCategory(item)}>
                                 {item}
                             </motion.button>
                         ))}
                     </div>
 
-                    {selected !== '' && <form className={"grid gap-4"}>
+                    {category !== '' && <form className={"grid gap-4"}>
                         <div className={"grid grid-cols-1 gap-4"}>
-                            <Input selected={selected} inputRef={nameRef} name={"Name"}/>
-                            {selected !== 'Investments' && <Input
-                                selected={selected}
+                            <Input selected={category} inputRef={nameRef} name={"Name"}/>
+                            {category !== 'Investments' && <Input
+                                selected={category}
                                 inputRef={amountRef}
                                 name={"Amount"}
                                 type={"text"}/>
                             }
-                            {selected === 'Investments' && <Input
-                                selected={selected}
+                            {category === 'Investments' && <Input
+                                selected={category}
                                 inputRef={priceRef}
                                 name={"Price"}
                                 type={"text"}/>
                             }
-                            {selected === 'Investments' && <Input
-                                selected={selected}
+                            {category === 'Investments' && <Input
+                                selected={category}
                                 inputRef={sharesRef}
                                 name={"Shares"}
                                 type={"text"}/>
@@ -122,14 +123,14 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
 
                     <div className={Desktop.BUTTONS}>
                         <motion.button
-                            whileTap={{scale: 0.9}}
+                            whileTap={FX.BUTTON_TAP}
                             className={ModalStyles.ACTION_BUTTON}
                             onClick={close}>
                             <FontAwesomeIcon icon={Icons.CLOSE}/>
                             <h2>Close</h2>
                         </motion.button>
                         <motion.button
-                            whileTap={{scale: 0.9}}
+                            whileTap={FX.BUTTON_TAP}
                             className={ModalStyles.ACTION_BUTTON}
                             onClick={async () => handleSubmit()}>
                             <FontAwesomeIcon icon={Icons.PLUS}/>
