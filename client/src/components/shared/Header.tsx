@@ -2,6 +2,7 @@ import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {motion} from "framer-motion";
 import PriceTag from "./PriceTag.tsx";
+import {FX} from "../../styles/fx.model.ts";
 
 export interface HeaderItem {
     title: string;
@@ -12,9 +13,9 @@ export interface HeaderItem {
 export default function Header(item: HeaderItem): JSX.Element {
     return (
         <motion.header
-            initial={{scale: 0.98}}
-            animate={{scale: 1}}
-            transition={{duration: 1}}
+            initial={FX.ANIMATE_INITIAL_2}
+            animate={FX.ANIMATE_FINAL_2}
+            transition={FX.TRANSITION_2}
             className={"grid items-center gap-4"}>
             <section className={"flex items-center justify-between gap-4 text-zinc-950"}>
                 <div className={"flex items-center gap-4 text-6xl font-bold"}>

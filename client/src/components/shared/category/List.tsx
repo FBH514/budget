@@ -8,9 +8,11 @@ enum Desktop {
 export default function List({items}: { items: Item[] }): JSX.Element {
     return (
         <div className={Desktop.PARENT}>
-            {items.map((item, index) => <ItemComponent 
-                item={item} 
-                key={index}/>
+            {items.map((item, index) => (
+                    <ItemComponent
+                        item={item}
+                        key={index}/>
+                )
             )}
         </div>
     );

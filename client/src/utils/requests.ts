@@ -42,6 +42,7 @@ export enum Endpoints {
     INCOME = `${HOST}/${NAME}/${VERSION}/income/`,
     INVESTMENTS = `${HOST}/${NAME}/${VERSION}/investments/`,
     EXPENSES = `${HOST}/${NAME}/${VERSION}/expenses/`,
+    LIABILITIES = `${HOST}/${NAME}/${VERSION}/liabilities/`,
     ADD_ENTRY = `${HOST}/${NAME}/${VERSION}/add-entry/`,
     UPDATE_ENTRY = `${HOST}/${NAME}/${VERSION}/update-entry/`
 }
@@ -49,5 +50,6 @@ export enum Endpoints {
 export enum QueryKeys {
     INCOME = "INCOME",
     INVESTMENTS = "INVESTMENTS",
-    EXPENSES = "EXPENSES"
+    EXPENSES = "EXPENSES",
+    LIABILITIES = "LIABILITIES"
 }

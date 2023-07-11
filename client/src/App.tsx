@@ -35,8 +35,16 @@ function Helper(): JSX.Element {
         () => GET(Endpoints.EXPENSES)
     );
 
+    const {data: liabilities} = useQuery(
+        QueryKeys.LIABILITIES,
+        () => GET(Endpoints.LIABILITIES)
+    );
+
     const incomeBalance = calculateTotal(income);
     const expensesBalance = calculateTotal(expenses);
+
+    // net worth
+    // const liabilitiesBalance = calculateTotal(liabilities);
     // const investmentsBalance = calculateTotal(investments);
 
     return (
@@ -48,6 +56,7 @@ function Helper(): JSX.Element {
                 <Category title={"Income"} data={income ?? placeholder} icon={Icons.MONEY_BAG}/>
                 <Category title={"Expenses"} data={expenses ?? placeholder} icon={Icons.CREDIT_CARD}/>
                 <Category title={"Investments"} data={investments ?? placeholder} icon={Icons.COINS}/>
+                <Category title={"Liabilities"} data={liabilities ?? placeholder} icon={Icons.PERCENT}/>
             </section>
         </div>
     );

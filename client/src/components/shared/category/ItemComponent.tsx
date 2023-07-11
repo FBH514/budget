@@ -17,7 +17,7 @@ function Helper({item}: { item: Item }): JSX.Element {
     return (
         <div onClick={open} key={item.name} className={Desktop.PARENT}>
             <h2 className={"whitespace-nowrap font-thin"}>{item.name}</h2>
-            <h3 className={"font-bold"}>{`$${item.amount}`}</h3>
+            <h3 className={"font-bold"}>{`$${item.amount?.toFixed(2)}`}</h3>
             {isActive && <EditModal handleClose={close} item={item}/>}
         </div>
     );

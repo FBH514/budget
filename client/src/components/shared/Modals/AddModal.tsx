@@ -73,10 +73,10 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
         <AnimatePresence>
             <div className={Desktop.PARENT_CONTAINER}>
                 <motion.div
-                    initial={FX.ANIMATE_INITIAL}
-                    animate={FX.ANIMATE_FINAL}
-                    exit={FX.ANIMATE_EXIT}
-                    transition={FX.TRANSITION}
+                    initial={FX.ANIMATE_INITIAL_1}
+                    animate={FX.ANIMATE_FINAL_1}
+                    exit={FX.ANIMATE_EXIT_1}
+                    transition={FX.TRANSITION_1}
                     className={Desktop.PARENT}>
 
                     <header className={Desktop.HEADER}>
@@ -88,8 +88,8 @@ function Helper({handleClose}: {handleClose: () => void }): JSX.Element {
                         {categories.map((item) => (
                             <motion.button
                                 key={item}
-                                whileTap={{scale: 0.9}}
-                                whileHover={{scale: 1.05}}
+                                whileHover={FX.BUTTON_HOVER}
+                                whileTap={FX.BUTTON_TAP}
                                 className={ModalStyles.CATEGORY_BUTTON}
                                 onClick={() => setCategory(item)}>
                                 {item}

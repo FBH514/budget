@@ -39,9 +39,10 @@ function Helper({handleClose, item}: {
             return;
         }
         await PUT(Endpoints.UPDATE_ENTRY, {
-            category: category,
-            name: nameRef.current?.value,
-            amount: amountRef.current?.value,
+            id: item.id,
+            category: item.category,
+            name: nameRef.current?.value ?? item.name,
+            amount: amountRef.current?.value ?? item.amount,
             shares: sharesRef.current?.value,
             price: priceRef.current?.value
         });
@@ -52,10 +53,10 @@ function Helper({handleClose, item}: {
         <AnimatePresence>
             <div className={Desktop.PARENT_CONTAINER}>
                 <motion.div
-                    initial={FX.ANIMATE_INITIAL}
-                    animate={FX.ANIMATE_FINAL}
-                    exit={FX.ANIMATE_EXIT}
-                    transition={FX.TRANSITION}
+                    initial={FX.ANIMATE_INITIAL_1}
+                    animate={FX.ANIMATE_FINAL_1}
+                    exit={FX.ANIMATE_EXIT_1}
+                    transition={FX.TRANSITION_1}
                     className={Desktop.PARENT}>
 
                     <header className={Desktop.HEADER}>

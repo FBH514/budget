@@ -30,13 +30,22 @@ class Project:
     VERSION: str = 'v1'
     CACHE_LENGTH: int = (60**2) * 24 * 7
     CATEGORIES: list[str] = [
-        "Income", "Expenses", "Investments"
-    ]
-    ROUTES = {
+        "Income", "Expenses", "Investments", "Liabilities"
+    ],
+    KEYS: dict = {
+        'NAME': 'name',
+        'AMOUNT': 'amount',
+        'PRICE': 'price',
+        'SHARES': 'shares',
+        'ID': 'id',
+        'CATEGORY': 'category',
+    }
+    ROUTES: dict = {
         'root': '/',
         'income': f'/{NAME}/{VERSION}/income/',
         'expenses': f'/{NAME}/{VERSION}/expenses/',
         'investments': f'/{NAME}/{VERSION}/investments/',
+        'liabilities': f'/{NAME}/{VERSION}/liabilities/',
         'ticker': f'/{NAME}/{VERSION}/tickers/' + '{ticker}',
         'add_entry': f'/{NAME}/{VERSION}/add-entry/',
         'update_entry': f'/{NAME}/{VERSION}/update-entry/'
@@ -81,7 +90,7 @@ async def income(response: Response) -> list:
     """
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("INCOME"))
-    return [{'id': _[0], 'name': _[1], 'amount': _[2]} for _ in data]
+    return [{'id': _[0], 'name': _[1], 'amount': _[2], 'category': _[3]} for _ in data]
 
 
 # GET http://localhost:8000/budget/v1/expenses/
@@ -95,7 +104,21 @@ async def expenses(response: Response) -> list:
     """
     with Database(os.getenv("NAME")) as db:
         data = db.execute(os.getenv("EXPENSES"))
-    return [{'id': _[0], 'name': _[1], 'amount': _[2]} for _ in data]
+    return [{'id': _[0], 'name': _[1], 'amount': _[2], 'category': _[3]} for _ in data]
+
+
+# GET http://localhost:8000/budget/v1/liabilities/
+@cache(Project.CACHE_LENGTH)
+@app.get(Project.ROUTES['liabilities'])
+async def liabilities(response: Response) -> list:
+    """
+    Returns liabilities table
+    :param response: Response
+    :return: dict
+    """
+    with Database(os.getenv("NAME")) as db:
+        data = db.execute(os.getenv("LIABILITIES"))
+    return [{'id': _[0], 'name': _[1], 'amount': _[2], 'category': _[3]} for _ in data]
 
 
 # GET http://localhost:8000/budget/v1/investments/
@@ -128,9 +151,12 @@ async def tickers(response: Response, ticker: str) -> dict:
 # POST http://localhost:8000/budget/v1/add-entry/
 @app.post(Project.ROUTES['add_entry'])
 async def add_entry(request: Request) -> dict:
-    """"""
+    """
+    Inserts database entry
+    :param request: Request
+    :return: dict
+    """
     data = await request.json()
-
     name: str = data.get('name')
     amount: str = data.get('amount')
     price: str = data.get('price')
@@ -142,25 +168,55 @@ async def add_entry(request: Request) -> dict:
 
     with Database(os.getenv("NAME")) as db:
         if category == Project.CATEGORIES[2]:
-            db.execute(f"""INSERT INTO {category} (name, price, shares) VALUES (:name, :price, :shares)""", {
-                'name': name, 'price': price, 'shares': shares
+            db.execute(f"""INSERT INTO {category} (name, price, shares, category) VALUES (:name, :price, :shares, :category)""", {
+                'name': name, 'price': price, 'shares': shares, 'category': category
             })
         else:
-            db.execute(f"""INSERT INTO {category} (name, amount) VALUES (:name, :amount)""", {
-                'name': name, 'amount': amount
+            db.execute(f"""INSERT INTO {category} (name, amount, category) VALUES (:name, :amount, :category)""", {
+                'name': name, 'amount': amount, 'category': category
             })
     if category != Project.CATEGORIES[2]:
-        return {'name': name, 'amount': amount}
-    return {'name': name, 'price': price, 'shares': shares}
+        return {'name': name, 'amount': amount, 'category': category}
+    return {'name': name, 'price': price, 'shares': shares, 'category': category}
 
 
 # PUT http://localhost:8000/budget/v1/update-entry/
 @app.put(Project.ROUTES['update_entry'])
 async def update_entry(request: Request) -> dict:
-    """"""
+    """
+    Updates database entry
+    :param request: Request
+    :return: dict
+    """
     data: dict = await request.json()
-    with Database(os.getenv('NAME')) as db:
-        db.execute(f"""UPDATE {data.get('category')} 
-        SET name = :name, amount = :amount WHERE id = :id""")
-    return {}
+    entry_id: str = data.get('id')
+    name: str = data.get('name')
+    amount: str = data.get('amount')
+    category: str = data.get('category')
+    price: str = data.get('price')
+    shares: str = data.get('shares')
 
+    with Database(os.getenv('NAME')) as db:
+        if category == "Investments":
+            db.execute(f"""UPDATE {category} SET name = :name, price = :price, shares = :shares, category = :category WHERE id = :id""", {
+                'id': entry_id,
+                'name': name,
+                'price': price,
+                'shares': shares,
+                'category': category
+            })
+        else:
+            db.execute(f"""UPDATE {category} SET name = :name, amount = :amount, category = :category WHERE id = :id""", {
+                'id': entry_id,
+                'name': name,
+                'amount': amount,
+                'category': category
+            })
+    return {
+        'id': entry_id,
+        'name': name,
+        'amount': amount,
+        'category': category,
+        'price': price,
+        'shares': shares
+    }
