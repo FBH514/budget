@@ -30,10 +30,11 @@ export async function PUT(endpoint: string, data: unknown): Promise<unknown> {
     return await response.json();
 }
 
-export async function DELETE(endpoint: string): Promise<unknown> {
+export async function DELETE(endpoint: string, data: unknown): Promise<unknown> {
     const response = await fetch(endpoint, {
         method: "DELETE",
-        headers: HEADERS
+        headers: HEADERS,
+        body: JSON.stringify(data)
     });
     return await response.json();
 }
@@ -44,7 +45,8 @@ export enum Endpoints {
     EXPENSES = `${HOST}/${NAME}/${VERSION}/expenses/`,
     LIABILITIES = `${HOST}/${NAME}/${VERSION}/liabilities/`,
     ADD_ENTRY = `${HOST}/${NAME}/${VERSION}/add-entry/`,
-    UPDATE_ENTRY = `${HOST}/${NAME}/${VERSION}/update-entry/`
+    UPDATE_ENTRY = `${HOST}/${NAME}/${VERSION}/update-entry/`,
+    DELETE_ENTRY = `${HOST}/${NAME}/${VERSION}/delete-entry/`
 }
 
 export enum QueryKeys {

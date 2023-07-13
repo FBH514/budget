@@ -48,7 +48,8 @@ class Project:
         'liabilities': f'/{NAME}/{VERSION}/liabilities/',
         'ticker': f'/{NAME}/{VERSION}/tickers/' + '{ticker}',
         'add_entry': f'/{NAME}/{VERSION}/add-entry/',
-        'update_entry': f'/{NAME}/{VERSION}/update-entry/'
+        'update_entry': f'/{NAME}/{VERSION}/update-entry/',
+        'delete_entry': f'/{NAME}/{VERSION}/delete-entry/'
     }
 
 
@@ -220,3 +221,20 @@ async def update_entry(request: Request) -> dict:
         'price': price,
         'shares': shares
     }
+
+# DELETE localhost:8000/budget/v1/delete-entry
+@app.delete(Project.ROUTES['delete_entry'])
+async def delete_entry(request: Request) -> dict:
+    """
+    Deletes database entry
+    :param request: Request
+    :return: dict
+    """
+    data: dict = await request.json()
+    entry_id: str = data.get('id')
+    category: str = data.get('category')
+    with Database(os.getenv('NAME')) as db:
+        db.execute(f"""DELETE FROM {category} where id = :id""", {
+            'id': entry_id
+        })
+    return {}

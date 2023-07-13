@@ -12,7 +12,7 @@ import {FX} from "../../styles/fx.model.ts";
 
 enum Desktop {
     PARENT = "bg-gradient-to-br from-indigo-700 to-blue-700 p-4 flex items-center justify-between gap-4 shadow-xl border-b-4 border-zinc-950",
-    MONTH = "flex items-center gap-2 text-2xl text-zinc-950 font-bold py-2 px-4 rounded-md border-2 border-zinc-950"
+    MONTH = "flex items-center gap-2 text-2xl text-orange-300 font-bold py-2 px-4"
 }
 
 enum Mobile {
@@ -41,7 +41,6 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
                         icon={Icons.WALLET}/>
                 </div>
                 <div className={Desktop.MONTH}>
-                    <FontAwesomeIcon icon={Icons.HOUSE}/>
                     <h2>{getMonth()} Budget</h2>
                 </div>
             </div>

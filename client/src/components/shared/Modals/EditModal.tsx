@@ -7,7 +7,7 @@ import {Endpoints} from "../../../utils/requests.ts";
 import {PUT} from "../../../utils/requests.ts";
 import {Item} from "../../../types/Item.model.ts";
 import {FX} from "../../../styles/fx.model.ts";
-// import {DELETE} from "../../../utils/requests.ts";
+import {DELETE} from "../../../utils/requests.ts";
 
 enum Desktop {
     PARENT_CONTAINER = "absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-gradient-to-br from-indigo-700 to-blue-700 rounded-md shadow-2xl w-3/6 h-fit p-1 z-50",
@@ -18,10 +18,7 @@ enum Desktop {
     HEADER = "flex items-center justify-center gap-4 text-zinc-50 text-4xl"
 }
 
-function Helper({handleClose, item}: {
-    handleClose: () => void;
-    item: Item
-}): JSX.Element {
+function Helper({handleClose, item}: { handleClose: () => void; item: Item }): JSX.Element {
 
     const [category, setCategory] = useState<string>('');
     const nameRef = useRef<HTMLInputElement>(null);
@@ -45,6 +42,14 @@ function Helper({handleClose, item}: {
             amount: amountRef.current?.value ?? item.amount,
             shares: sharesRef.current?.value,
             price: priceRef.current?.value
+        });
+        close();
+    }
+
+    const handleDelete = async (): Promise<void> => {
+        await DELETE(Endpoints.DELETE_ENTRY, {
+            id: item.id,
+            category: item.category
         });
         close();
     }
@@ -78,6 +83,13 @@ function Helper({handleClose, item}: {
                             className={ModalStyles.CATEGORY_BUTTON}
                             onClick={() => setCategory('Amount')}>
                             Amount
+                        </motion.button>
+                        <motion.button
+                            whileTap={FX.BUTTON_TAP}
+                            whileHover={FX.BUTTON_HOVER}
+                            className={ModalStyles.CATEGORY_BUTTON}
+                            onClick={async () => handleDelete()}>
+                            Delete
                         </motion.button>
                     </div>
 

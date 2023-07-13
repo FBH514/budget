@@ -28,6 +28,7 @@ module.exports = {
             },
             fontFamily: {
                 'sans': ['Oxygen', 'sans-serif'],
+                'mono': ['Oxygen Mono', 'monospace'],
                 'handwritten': ['Dancing Script', 'handwritten']
             }
         },
