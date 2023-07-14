@@ -29,9 +29,9 @@ export default function Navbar({balance}: { balance: number; }): JSX.Element {
 
     return (
         <motion.nav
-            initial={FX.ANIMATE_INITIAL_3}
-            animate={FX.ANIMATE_FINAL_3}
-            transition={FX.TRANSITION_2}
+            initial={{y: -100}}
+            animate={{y: 0}}
+            transition={{duration: 0.5}}
             className={mobile ? Mobile.PARENT : Desktop.PARENT}>
             <div className={"flex items-center gap-4"}>
                 <div className={"flex items-center gap-4"}>

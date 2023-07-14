@@ -44,4 +44,5 @@ body {
     mix-blend-mode: hard-light;
     opacity: 0.6;
     z-index: -1;
+    border-radius: 6px;
 }
